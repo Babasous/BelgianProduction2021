@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreCategoryRequest;
 
 class CategoryController extends Controller
 {
@@ -15,18 +16,16 @@ class CategoryController extends Controller
        /*  return view('category.index', ['categories' => $categories]); */
         return view('category.index', compact('categories'));
     }
-
+    
     public function create(){
         $category = new Category();
         return view('category.edit', compact('category'));
         
     }
 
-    public function store(Request $request){
-        // Validation du formulaire
-        $validated = $request->validate([
-            'nom' => 'required|min:3|max:15|unique:App\Models\Category,nom',
-        ]);
+    public function store(StoreCategoryRequest $request){
+        // Troisième forme de validation du formulaire
+        $validated = $request->validated();
 
         $nom = $request->input('nom');
         $category = new Category();
@@ -46,7 +45,7 @@ class CategoryController extends Controller
     }
 
     public function update(Request $request, $id){
-        // Validation du formulaire
+        // Première forme de validation du formulaire
         $validated = $request->validate([
             'nom' => 'required|min:3|max:15|unique:App\Models\Category,nom',
         ]);
